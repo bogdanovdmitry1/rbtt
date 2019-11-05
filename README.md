@@ -15,6 +15,16 @@ $ docker exec -it docker-symfony4-php-fpm bash
 $ php bin/console doctrine:migrations:migrate
 $ php bin/console doctrine:fixtures:load
 # загрузка администратора в БД
+# username: admin@localhost.by
+# password: adminpwd
+```
+
+Ключи для JWT
+```bash
+$ mkdir config/jwt
+$ openssl genrsa -out config/jwt/private.pem -aes256 4096
+$ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+# passphrase = "superpassphrase"
 ```
 
 проект доступен по адресу

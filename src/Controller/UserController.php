@@ -27,7 +27,12 @@ class UserController extends AbstractController
     const PHONE_VALIDATION_MESSAGE = 'phone должен начинаться с "+" и состоять из не менее 7 цифр';
     const EMAIL_VALIDATION_MESSAGE = 'email должен быть корректным адресом электронной почты';
 
+
     /**
+     * Регистрация пользователя
+     *
+     * Авторизация не нужна.
+     *
      * @Route("/register", name="user_register",  methods={"POST"})
      * @param Request $request
      * @param UserManagerInterface $userManager
@@ -85,6 +90,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * Редактирование пользователя
+     *
+     * Только для авторизованных пользователей. Можно редактировать только самого себя.
+     *
      * @Route("/edit", name="user_edit",  methods={"POST"})
      * @param Request $request
      * @param UserManagerInterface $userManager
@@ -152,6 +161,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * Список пользователей
+     *
+     * Авторизация не нужна
+     *
      * @Route("/list", name="user_list",  methods={"GET"})
      * @param UserManagerInterface $userManager
      * @return JsonResponse
@@ -187,6 +200,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * Удаление пользователя
+     *
+     * Только администратор
+     *
      * @Route("/delete", name="user_delete",  methods={"DELETE"})
      * @param Request $request
      * @param UserManagerInterface $userManager

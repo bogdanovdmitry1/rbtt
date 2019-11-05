@@ -1,0 +1,11 @@
+nelmio_api_doc:
+  documentation:
+    #        schemes: [http, https]
+    info:
+      title: User API
+      description: Dmitry Bogdanov
+      version: 1.0.0
+  areas:
+    path_patterns:
+      - ^/user-api
+      - ^/user-api/login
