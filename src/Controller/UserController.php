@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use FOS\UserBundle\Model\UserManagerInterface;;
-use Nelmio\ApiDocBundle\Annotation\Model;
+
+use App\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validation;
@@ -49,10 +49,10 @@ class UserController extends AbstractController
      * @SWG\Parameter(
      *     name="user JSON",
      *     in="body",
-     *     type="array",
+     *     type="json",
      *     description="JSON with user data",
      *     @SWG\Schema(
-     *          type="array",
+     *          type="json",
      *          items={"email","password","firstName","lastName","phone"},
      *          example={"email"="some2@email.ru","password"="somepassxcv","firstName"="1dsds","lastName"="jghjgh","phone"="+375293021197"}
      *     )
@@ -86,7 +86,10 @@ class UserController extends AbstractController
             return new JsonResponse(["error" => $e->getMessage()], 500);
         }
 
-        return new JsonResponse(["success" => 'Пользователь ' . $user->getUsername(). ' успешно зарегистрирован!'], 200);
+        return new JsonResponse([
+            "success" => 'Пользователь ' . $user->getUsername(). ' успешно зарегистрирован!',
+            "user" => $this->userOutputMap($user)
+        ], 200);
     }
 
     /**
@@ -115,10 +118,10 @@ class UserController extends AbstractController
      * @SWG\Parameter(
      *     name="user JSON",
      *     in="body",
-     *     type="array",
+     *     type="json",
      *     description="JSON with user data",
      *     @SWG\Schema(
-     *          type="array",
+     *          type="json",
      *          items={"email","password","firstName","lastName","phone"},
      *          example={"email"="some2@email.ru","password"="somepassxcv","firstName"="1dsds","lastName"="jghjgh","phone"="+375293021197"}
      *     )
@@ -157,7 +160,10 @@ class UserController extends AbstractController
             return new JsonResponse(["error" => $e->getMessage()], 500);
         }
 
-        return new JsonResponse(["success" => 'Пользователь ' . $user->getUsername(). ' успешно изменен!'], 200);
+        return new JsonResponse([
+            "success" => 'Пользователь ' . $user->getUsername(). ' успешно изменен!',
+            "user" => $this->userOutputMap($user)
+        ], 200);
     }
 
     /**
@@ -184,13 +190,7 @@ class UserController extends AbstractController
         try {
             $users = $userManager->findUsers();
             foreach ($users as $user) {
-                $output[] = array(
-                    'firstName' => $user->getFirstName(),
-                    'lastName' => $user->getLastName(),
-                    'email' => $user->getEmail(),
-                    'phone' => $user->getPhone(),
-                    'roles' => $user->getRoles(),
-                );
+                $output[] = $this->userOutputMap($user);
             }
         } catch (\Exception $e) {
             return new JsonResponse(["error" => $e->getMessage()], 500);
@@ -225,10 +225,10 @@ class UserController extends AbstractController
      * @SWG\Parameter(
      *     name="user JSON",
      *     in="body",
-     *     type="array",
+     *     type="json",
      *     description="JSON with user data",
      *     @SWG\Schema(
-     *          type="array",
+     *          type="json",
      *          items={"email"},
      *          example={"email"="some2@email.ru"}
      *     )
@@ -316,5 +316,15 @@ class UserController extends AbstractController
 
         return $validator->validate($data, $constraint);
 
+    }
+
+    private function userOutputMap(User $user) {
+        return array(
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'email' => $user->getEmail(),
+            'phone' => $user->getPhone(),
+            'roles' => $user->getRoles(),
+        );
     }
 }

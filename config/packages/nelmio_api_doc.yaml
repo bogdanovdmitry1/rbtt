@@ -3,8 +3,37 @@ nelmio_api_doc:
     #        schemes: [http, https]
     info:
       title: User API
-      description: Dmitry Bogdanov
+      description: dbogdanov test task
       version: 1.0.0
+    securityDefinitions:
+      Bearer:
+        type: apiKey
+        description: 'Value: Bearer {jwt}'
+        name: Authorization
+        in: header
+    paths:
+      /user-api/login:
+        post:
+          summary: "Авторизация"
+          description: "Авторизация"
+          parameters:
+            - name: "user JSON"
+              in: body
+              type: json
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: "some2@email.ru"
+                  password:
+                    type: string
+                    example: "somepassxcv"
+          responses:
+            "200":
+              description: "JWT"
+            "403":
+              description: "Доступ запрещен"
   areas:
     path_patterns:
       - ^/user-api

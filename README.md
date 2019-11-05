@@ -19,14 +19,6 @@ $ php bin/console doctrine:fixtures:load
 # password: adminpwd
 ```
 
-Ключи для JWT
-```bash
-$ mkdir config/jwt
-$ openssl genrsa -out config/jwt/private.pem -aes256 4096
-$ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-# passphrase = "superpassphrase"
-```
-
 проект доступен по адресу
 ```bash
 http://localhost:8000
@@ -38,3 +30,4 @@ http://192.168.99.100:8000
 ```bash
 /api-doc
 ```
+для корректной работы авторизации в Swagger необходимо перед токеном вставить "Bearer " в форме Authorize
